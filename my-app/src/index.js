@@ -61,21 +61,34 @@ import './index.css';
       this.setState({
         history: history.concat([
           {
-          squares: squares
+          squares: squares,
+          ind: function(){
+            let col = i/3;
+            let row;
+            col -= col%1;
+            col++;
+            if (col === 1){
+              row = i + 1;
+            } else if (col === 2){
+              row = i - 2;
+            } else {
+              row = i - 5;
+            }
+            return " " + squares[i] + " col: " + col + " row: " + row;
+            }
           }
         ]),
         stepNumber: history.length,
-        xIsNext: !this.state.xIsNext
+        xIsNext: !this.state.xIsNext,
       });
     }
 
     jumpTo(step) {
       this.setState({
         stepNumber: step,
-        xIsNext: (step % 2) === 0,
+        xIsNext: (step % 2) === 0
       });
     }
-  
 
     render() {
       const history = this.state.history;
@@ -84,7 +97,7 @@ import './index.css';
 
       const moves = history.map((step, move) => {
         const desc = move ?
-          'Go to move #' + move :
+          'Move #' + move + history[move].ind():
           'Go to game start';
         return (
           <li key = {move}>
